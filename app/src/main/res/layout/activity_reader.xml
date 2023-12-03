@@ -99,6 +99,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:gravity="center_vertical"
+        android:visibility="gone"
         android:orientation="horizontal"
         android:padding="1dp">
 

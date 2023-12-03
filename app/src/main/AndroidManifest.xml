@@ -6,6 +6,8 @@
     android:versionName="0.4.3">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 
     <application
         android:name=".BookyApp"
@@ -25,6 +27,11 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category  android:name="android.intent.category.HOME" />
+
+                <category  android:name="android.intent.category.DEFAULT" />
+
+                <category android:name="com.yotadevices.intent.category.EPD_HOME" />
             </intent-filter>
             <meta-data android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />

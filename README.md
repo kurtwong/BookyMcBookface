@@ -1,3 +1,10 @@
+
+Fork 原因：
+	因所有的 yota3 墨水屏坏了，但音量键可用。所以修改此应用，以代替 yota3的墨水屏桌面应用，并可
+	响应键盘翻页（在彩屏导入书）。
+
+
+
 # Booky McBookface
 
 An extremely unfancy, slightly broken, bare-bones epub reader. Also reads txt and html ebooks. 

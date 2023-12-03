@@ -11,16 +11,17 @@ import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.graphics.drawable.Icon;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
@@ -99,7 +100,8 @@ public class BookListActivity extends AppCompatActivity {
 
     private boolean openLastread = false;
     private static boolean alreadyStarted=false;
-
+    private String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CALL_PHONE,
+            Manifest.permission.CAMERA,Manifest.permission.ACCESS_COARSE_LOCATION};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,7 +147,35 @@ public class BookListActivity extends AppCompatActivity {
 
         //Log.d("BOOKLIST", "onCreate end");
 
+        checkPermission();
+
     }
+
+    private void checkPermission() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int i =ContextCompat.checkSelfPermission(getApplicationContext(),permissions[0]);
+            int j =ContextCompat.checkSelfPermission(getApplicationContext(),permissions[1]);
+
+            if( i != PackageManager.PERMISSION_GRANTED || j != PackageManager.PERMISSION_GRANTED) {
+                Log.d("BookListActivity","Failed to get permission");
+
+                startRequestPermission();
+            }
+        }
+
+        boolean grantedAll = ContextCompat.checkSelfPermission(getApplicationContext(),Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        if (!grantedAll)
+        {
+            ActivityCompat.requestPermissions(BookListActivity.this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    322); // REQUEST_PERMISSIONS
+        }
+    }
+
+    private void startRequestPermission() {
+        ActivityCompat.requestPermissions(this, permissions, 321);
+    }
+
 
     @Override
     protected void onNewIntent(Intent intent) {

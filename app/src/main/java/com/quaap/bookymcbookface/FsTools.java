@@ -21,6 +21,7 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
@@ -50,7 +51,8 @@ public class FsTools {
 
     private Map<File,String> getDrives() {
         List<File> roots = new ArrayList<>();
-        roots.add(new File("/storage"));
+         roots.add( Environment.getExternalStorageDirectory());
+       /// roots.add(new File("/storage"));
         //roots.add(new File("/mnt"));
 
         try {
@@ -66,14 +68,12 @@ public class FsTools {
             try {
                 int sd = 1;
                 if (r!=null) {
-                    for (File e : r.listFiles()) {
+                    for (File e : Objects.requireNonNull(r.listFiles())) {
                         try {
                             Log.d("storage", e.getPath() + " " + e.isDirectory());
                             if (e.isDirectory()) { // && !e.getName().equals("emulated") && !e.getName().equals("self")) {
                                 boolean removable = false;
-                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                                    removable = Environment.isExternalStorageRemovable(e);
-                                }
+                                removable = Environment.isExternalStorageRemovable(e);
                                 String name = "SD";
                                 if (sd++ > 1) name += sd;
                                 files.put(e, removable ? name : e.getName());

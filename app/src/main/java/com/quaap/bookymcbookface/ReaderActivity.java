@@ -19,9 +19,10 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 import android.util.Log;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -212,6 +213,14 @@ public class ReaderActivity extends Activity {
 
         });
 
+        // 禁用触屏响应(因为 所用的yota3 eink屏自动乱点）
+        webView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+
         webView.setWebViewClient(new WebViewClient() {
 
             @Override
@@ -336,6 +345,27 @@ public class ReaderActivity extends Activity {
             }
         }
 
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        int action = event.getAction();
+        switch (action) {
+            case KeyEvent.ACTION_DOWN:
+                if(event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP) {
+                    prevPage();
+                    return true;
+                } else if(event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN) {
+                    nextPage();
+                    return true;
+                }
+                break;
+
+            default:
+                break;
+        }
+
+        return super.dispatchKeyEvent(event);
     }
 
     @Override
